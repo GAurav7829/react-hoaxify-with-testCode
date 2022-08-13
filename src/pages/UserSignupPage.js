@@ -6,7 +6,8 @@ export class UserSignupPage extends React.Component{
         username: "",
         password: "",
         passwordRepeat: "",
-        pendingApiCall: false
+        pendingApiCall: false,
+        errors: {}
     }
     onchangeDisplayName = (event)=>{
         const value = event.target.value;
@@ -43,8 +44,15 @@ export class UserSignupPage extends React.Component{
             this.props.actions.postSignup(user)
                 .then((response)=>{
                     this.setState({pendingApiCall: false});
-                }).catch((error)=>{
-                    this.setState({pendingApiCall: false});
+                    console.log("user saved successfully");
+                }).catch((apiError)=>{
+                    let errors = {...this.state.errors}
+                    if(apiError.response.data && apiError.response.data.validationErrors){
+                        console.log(apiError.response.data.validationErrors);
+                        errors = apiError.response.data.validationErrors;
+                    }
+                    this.setState({pendingApiCall: false, errors});
+                    console.log("Error in saving user", this.state);
                 });
         }
     }
@@ -60,6 +68,9 @@ export class UserSignupPage extends React.Component{
                         value={this.state.displayName}
                         onChange={this.onchangeDisplayName}
                     />
+                    <div className="invalid-feedback">
+                        {this.state.errors.displayName}
+                    </div>
                 </div>
                 <div className="col-12 mb-3">
                     <label>Username:</label>
