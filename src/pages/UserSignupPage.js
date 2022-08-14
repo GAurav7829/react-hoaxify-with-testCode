@@ -13,20 +13,27 @@ export class UserSignupPage extends React.Component{
     }
     onchangeDisplayName = (event)=>{
         const value = event.target.value;
+        const errors = {...this.state.errors}
+        delete errors.displayName;
         this.setState({
-            displayName: value
+            displayName: value,
+            errors
         });
     }
     onChangeUsername = (event)=>{
         const value = event.target.value;
+        const errors = {...this.state.errors}
+        delete errors.username;
         this.setState({
-            username: value
+            username: value,
+            errors
         });
     }
     onChangePassword = (event)=>{
         const value = event.target.value;
         const passwordRepeatConfirmed = this.state.passwordRepeat === value;
         const errors = {...this.state.errors}
+        delete errors.password;
         errors.passwordRepeatError = passwordRepeatConfirmed ? "" : "Does not match to password";
         this.setState({
             password: value,
@@ -38,6 +45,7 @@ export class UserSignupPage extends React.Component{
         const value = event.target.value;
         const passwordRepeatConfirmed = this.state.password === value;
         const errors = {...this.state.errors}
+        delete errors.passwordRepeat;
         errors.passwordRepeatError = passwordRepeatConfirmed ? "" : "Does not match to password";
         this.setState({
             passwordRepeat: value,
